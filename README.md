@@ -180,9 +180,11 @@ Path-based routes emulate AWS ALB behavior:
 ### ECS
 - `deploy/ecs/task-definitions.json`
 - `deploy/ecs/service-definitions.md`
+- `deploy/ecs/complete-custom-vpc-guide.md`
   - task/service definition guidance
   - ALB design
   - target group design
+  - full click-by-click deployment in custom VPC
 
 ### EKS
 - `deploy/eks/namespace.yaml`
@@ -190,29 +192,12 @@ Path-based routes emulate AWS ALB behavior:
 - `deploy/eks/service.yaml`
 - `deploy/eks/ingress.yaml`
 - `deploy/eks/hpa.yaml`
+- `deploy/eks/complete-custom-vpc-guide.md`
+  - full click-by-click deployment in custom VPC
 
 ## AWS Deployment Guide (Beginner Friendly)
 
-1. Create ECR repositories for each service and image.
-2. Build docker images locally (`docker build`).
-3. Authenticate Docker to ECR and push images.
-4. Create IAM execution/task roles (ECS) and worker/node roles (EKS).
-5. Configure security groups for ALB, ECS tasks, and EKS nodes.
-6. Design a VPC with CIDR sized for growth.
-7. Create public subnets across at least 2 AZs.
-8. Create private subnets across at least 2 AZs.
-9. Create NAT Gateway in public subnet for private egress.
-10. Attach and configure Internet Gateway.
-11. Configure route tables for public/private subnet traffic.
-12. Create ECS cluster with Fargate capacity.
-13. Create ECS service using task definition and private subnets.
-14. Configure ECS ALB listener rules for route-based traffic.
-15. Create EKS cluster (managed control plane).
-16. Create managed node groups.
-17. Install AWS Load Balancer Controller in EKS.
-18. Apply Kubernetes manifests (`namespace`, `deployments`, `services`).
-19. Apply ingress manifest and verify ALB creation.
-20. Configure autoscaling with HPA and metrics server.
-21. Send container logs to CloudWatch (ECS and EKS).
-22. Validate endpoints, tracing headers, and failure simulation behavior.
+For full spoon-fed deployment steps (starting from custom VPC creation until endpoint validation), use:
 
+1. **ECS (Fargate) custom VPC guide**: `deploy/ecs/complete-custom-vpc-guide.md`
+2. **EKS custom VPC guide**: `deploy/eks/complete-custom-vpc-guide.md`
