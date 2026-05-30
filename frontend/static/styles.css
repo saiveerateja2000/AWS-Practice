@@ -1,0 +1,9 @@
+:root { --order:#0077cc; --user:#2f9e44; --payment:#f08c00; --inventory:#7b2cbf; }
+*{box-sizing:border-box} body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#1f2937}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.btn{display:block;padding:14px;border-radius:10px;color:#fff;text-decoration:none;font-weight:700;text-align:center}
+.order{background:var(--order)} .user{background:var(--user)} .payment{background:var(--payment)} .inventory{background:var(--inventory)}
+.dark{background:#111827}
+.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-top:16px}
+pre{white-space:pre-wrap;word-break:break-word}
