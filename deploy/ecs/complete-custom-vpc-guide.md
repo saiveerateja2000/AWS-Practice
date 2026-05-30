@@ -107,7 +107,7 @@ Go to **ECR > Repositories > Create repository** and create these 6 repos:
 Run from repository root:
 
 ```bash
-cd /tmp/workspace/saiveerateja2000/AWS-Practice
+cd /path/to/AWS-Practice
 export AWS_REGION=ap-south-1
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
@@ -181,7 +181,7 @@ docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/inventory-service:v1.0
 5. Memory: `2 GB`.
 6. Execution role: `ecsTaskExecutionRole`.
 7. Task role: `cloud-native-traffic-task-role`.
-8. Add 6 containers exactly as in `/deploy/ecs/task-definitions.json`.
+8. Add 6 containers exactly as in `deploy/ecs/task-definitions.json`.
 9. For `nginx` expose container port `80`; all other containers use `5000`.
 10. Add awslogs logging for each container:
     - Log group: `/ecs/cloud-native-traffic`
@@ -189,7 +189,7 @@ docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/inventory-service:v1.0
     - Stream prefix: container name
 11. Create task definition.
 
-> Tip: Replace `<account>` and `<region>` placeholders from `task-definitions.json` before using values.
+> Tip: Replace `<account>` and `<region>` placeholders from `deploy/ecs/task-definitions.json` before using values.
 
 ---
 

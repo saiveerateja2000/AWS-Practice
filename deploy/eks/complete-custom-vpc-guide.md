@@ -92,7 +92,7 @@ In **ECR > Repositories**, create:
 From repository root:
 
 ```bash
-cd /tmp/workspace/saiveerateja2000/AWS-Practice
+cd /path/to/AWS-Practice
 export AWS_REGION=ap-south-1
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
@@ -200,14 +200,14 @@ kubectl -n kube-system get deployment aws-load-balancer-controller
 
 ## 10) Update Kubernetes Manifests with Your ECR URIs
 
-Edit `/deploy/eks/deployment.yaml` and replace all:
+Edit `deploy/eks/deployment.yaml` and replace all:
 - `<account>` with AWS account ID
 - `<region>` with region
 
 Then apply manifests:
 
 ```bash
-cd /tmp/workspace/saiveerateja2000/AWS-Practice
+cd /path/to/AWS-Practice
 kubectl apply -f deploy/eks/namespace.yaml
 kubectl apply -f deploy/eks/deployment.yaml
 kubectl apply -f deploy/eks/service.yaml
