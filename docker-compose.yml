@@ -1,0 +1,53 @@
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - order-service
+      - user-service
+      - payment-service
+      - inventory-service
+
+  frontend:
+    build: ./frontend
+    environment:
+      SERVICE_NAME: frontend
+      ENVIRONMENT: local
+      AWS_DEPLOYMENT_TYPE: docker-compose
+      VERSION: "1.0.0"
+
+  order-service:
+    build: ./services/order-service
+    environment:
+      SERVICE_NAME: order-service
+      ENVIRONMENT: local
+      AWS_DEPLOYMENT_TYPE: docker-compose
+      VERSION: "1.0.0"
+      USER_SERVICE_URL: http://user-service:5000/users/profile
+
+  user-service:
+    build: ./services/user-service
+    environment:
+      SERVICE_NAME: user-service
+      ENVIRONMENT: local
+      AWS_DEPLOYMENT_TYPE: docker-compose
+      VERSION: "1.0.0"
+
+  payment-service:
+    build: ./services/payment-service
+    environment:
+      SERVICE_NAME: payment-service
+      ENVIRONMENT: local
+      AWS_DEPLOYMENT_TYPE: docker-compose
+      VERSION: "1.0.0"
+      INVENTORY_SERVICE_URL: http://inventory-service:5000/inventory/check
+
+  inventory-service:
+    build: ./services/inventory-service
+    environment:
+      SERVICE_NAME: inventory-service
+      ENVIRONMENT: local
+      AWS_DEPLOYMENT_TYPE: docker-compose
+      VERSION: "1.0.0"

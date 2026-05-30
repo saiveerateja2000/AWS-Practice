@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Load Test</title><link rel="stylesheet" href="/static/styles.css"></head>
+<body><div class="container"><h1>Load Balancer Test</h1><button id="run">Run 10 Requests</button><div class="card"><pre id="out">Click run.</pre></div><a href="/">Back</a></div><script src="/static/app.js"></script><script>
+document.getElementById('run').addEventListener('click', async()=>{
+ const lines=[];
+ for (let i=0;i<10;i++){ const res=await fetchJson('/orders/lbtest'); lines.push(res.data); }
+ renderList('out', lines);
+});
+</script></body></html>
