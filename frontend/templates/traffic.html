@@ -4,6 +4,6 @@
   const mapping={'Order Service Requests':'/orders/metrics','User Service Requests':'/users/metrics','Payment Service Requests':'/payments/metrics','Inventory Service Requests':'/inventory/metrics'};
   const result={};
   for (const [label,url] of Object.entries(mapping)){ const v=await fetchJson(url); result[label]=v.data.request_count; }
-  renderList('out', result);
+  renderJson('out', result);
 })();
 </script></body></html>

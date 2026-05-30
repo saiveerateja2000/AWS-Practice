@@ -2,13 +2,14 @@ import json
 import logging
 import os
 import socket
+import threading
 import time
 import uuid
 from datetime import datetime, timezone
 
 import psutil
 import requests
-from flask import Flask, Response, g, jsonify, request
+from flask import Flask, g, jsonify, request
 
 
 def _hostname() -> str:
@@ -67,14 +68,16 @@ def create_service_app(service_name: str, color: str) -> Flask:
     app.config["THEME_COLOR"] = color
     app.config["REQUEST_COUNT"] = 0
     app.config["PATH_COUNTS"] = {}
+    app.config["COUNTER_LOCK"] = threading.Lock()
     app.logger = _configure_logger(service_name)
 
     @app.before_request
     def before_request():
         g.start_time = time.perf_counter()
         g.request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
-        app.config["REQUEST_COUNT"] += 1
-        app.config["PATH_COUNTS"][request.path] = app.config["PATH_COUNTS"].get(request.path, 0) + 1
+        with app.config["COUNTER_LOCK"]:
+            app.config["REQUEST_COUNT"] += 1
+            app.config["PATH_COUNTS"][request.path] = app.config["PATH_COUNTS"].get(request.path, 0) + 1
 
     @app.after_request
     def after_request(response):
@@ -127,12 +130,13 @@ def create_service_app(service_name: str, color: str) -> Flask:
     @app.get("/metrics")
     def metrics():
         runtime = _runtime(service_name)
-        runtime.update(
-            {
-                "request_count": app.config["REQUEST_COUNT"],
-                "path_counts": app.config["PATH_COUNTS"],
-            }
-        )
+        with app.config["COUNTER_LOCK"]:
+            runtime.update(
+                {
+                    "request_count": app.config["REQUEST_COUNT"],
+                    "path_counts": dict(app.config["PATH_COUNTS"]),
+                }
+            )
         return jsonify(runtime)
 
     @app.get("/lbtest")
@@ -154,5 +158,5 @@ def downstream_get(url: str, request_id: str, timeout: float = 3.0):
         response = requests.get(url, headers={"X-Request-ID": request_id}, timeout=timeout)
         data = response.json() if response.content else {}
         return response.status_code, data
-    except requests.RequestException as exc:
-        return 503, {"status": "error", "message": str(exc)}
+    except requests.RequestException:
+        return 503, {"status": "error", "message": "Downstream service unavailable"}

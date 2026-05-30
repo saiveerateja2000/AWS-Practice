@@ -3,9 +3,9 @@ async function fetchJson(url){
   const data = await resp.json();
   return {status: resp.status, requestId: resp.headers.get('X-Request-ID'), data};
 }
-async function renderList(target, items){
+function renderJson(target, items){
   const el = document.getElementById(target);
   el.textContent = JSON.stringify(items, null, 2);
 }
 window.fetchJson = fetchJson;
-window.renderList = renderList;
+window.renderJson = renderJson;

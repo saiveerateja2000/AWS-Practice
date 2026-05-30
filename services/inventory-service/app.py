@@ -9,9 +9,12 @@ app = create_service_app(SERVICE_NAME, "#7b2cbf")
 app.config["SIMULATE_FAILURE"] = False
 
 
-@app.get("/inventory/check")
+@app.get("/check")
 def inventory_check():
-    if app.config["SIMULATE_FAILURE"]:
+    with app.config["COUNTER_LOCK"]:
+        failure_enabled = app.config["SIMULATE_FAILURE"]
+
+    if failure_enabled:
         return (
             jsonify(
                 {
@@ -39,7 +42,8 @@ def inventory_check():
 
 @app.get("/simulate-failure")
 def simulate_failure():
-    app.config["SIMULATE_FAILURE"] = True
+    with app.config["COUNTER_LOCK"]:
+        app.config["SIMULATE_FAILURE"] = True
     return (
         jsonify(
             {

@@ -5,11 +5,11 @@ from flask import g, jsonify
 from service_base import create_service_app, downstream_get
 
 SERVICE_NAME = os.getenv("SERVICE_NAME", "payment-service")
-INVENTORY_SERVICE_URL = os.getenv("INVENTORY_SERVICE_URL", "http://inventory-service:5000/inventory/check")
+INVENTORY_SERVICE_URL = os.getenv("INVENTORY_SERVICE_URL", "http://inventory-service:5000/check")
 app = create_service_app(SERVICE_NAME, "#f08c00")
 
 
-@app.get("/payments/process")
+@app.get("/process")
 def payment_process():
     status_code, inventory_response = downstream_get(INVENTORY_SERVICE_URL, g.request_id)
     success = status_code == 200

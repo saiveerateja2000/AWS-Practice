@@ -7,11 +7,11 @@
   "executionRoleArn": "arn:aws:iam::<account-id>:role/ecsTaskExecutionRole",
   "taskRoleArn": "arn:aws:iam::<account-id>:role/cloud-native-traffic-task-role",
   "containerDefinitions": [
-    {"name": "nginx", "image": "<account>.dkr.ecr.<region>.amazonaws.com/nginx:latest", "portMappings": [{"containerPort": 80}], "essential": true},
-    {"name": "frontend", "image": "<account>.dkr.ecr.<region>.amazonaws.com/frontend:latest", "portMappings": [{"containerPort": 5000}], "essential": true},
-    {"name": "order-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/order-service:latest", "portMappings": [{"containerPort": 5000}], "essential": true},
-    {"name": "user-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/user-service:latest", "portMappings": [{"containerPort": 5000}], "essential": true},
-    {"name": "payment-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/payment-service:latest", "portMappings": [{"containerPort": 5000}], "essential": true},
-    {"name": "inventory-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/inventory-service:latest", "portMappings": [{"containerPort": 5000}], "essential": true}
+    {"name": "nginx", "image": "<account>.dkr.ecr.<region>.amazonaws.com/nginx:v1.0.0", "portMappings": [{"containerPort": 80}], "essential": true},
+    {"name": "frontend", "image": "<account>.dkr.ecr.<region>.amazonaws.com/frontend:v1.0.0", "portMappings": [{"containerPort": 5000}], "essential": true},
+    {"name": "order-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/order-service:v1.0.0", "portMappings": [{"containerPort": 5000}], "essential": true},
+    {"name": "user-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/user-service:v1.0.0", "portMappings": [{"containerPort": 5000}], "essential": true},
+    {"name": "payment-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/payment-service:v1.0.0", "portMappings": [{"containerPort": 5000}], "essential": true},
+    {"name": "inventory-service", "image": "<account>.dkr.ecr.<region>.amazonaws.com/inventory-service:v1.0.0", "portMappings": [{"containerPort": 5000}], "essential": true}
   ]
 }

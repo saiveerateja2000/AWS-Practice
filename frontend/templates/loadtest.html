@@ -3,6 +3,6 @@
 document.getElementById('run').addEventListener('click', async()=>{
  const lines=[];
  for (let i=0;i<10;i++){ const res=await fetchJson('/orders/lbtest'); lines.push(res.data); }
- renderList('out', lines);
+ renderJson('out', lines);
 });
 </script></body></html>

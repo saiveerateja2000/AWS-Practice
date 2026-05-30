@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: <account>.dkr.ecr.<region>.amazonaws.com/order-service:latest
+          image: <account>.dkr.ecr.<region>.amazonaws.com/order-service:v1.0.0
           ports:
             - containerPort: 5000
           env:
@@ -45,9 +45,18 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: <account>.dkr.ecr.<region>.amazonaws.com/user-service:latest
+          image: <account>.dkr.ecr.<region>.amazonaws.com/user-service:v1.0.0
           ports:
             - containerPort: 5000
+          env:
+            - name: SERVICE_NAME
+              value: user-service
+            - name: ENVIRONMENT
+              value: eks
+            - name: AWS_DEPLOYMENT_TYPE
+              value: EKS
+            - name: VERSION
+              value: "1.0.0"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,9 +75,18 @@ spec:
     spec:
       containers:
         - name: payment-service
-          image: <account>.dkr.ecr.<region>.amazonaws.com/payment-service:latest
+          image: <account>.dkr.ecr.<region>.amazonaws.com/payment-service:v1.0.0
           ports:
             - containerPort: 5000
+          env:
+            - name: SERVICE_NAME
+              value: payment-service
+            - name: ENVIRONMENT
+              value: eks
+            - name: AWS_DEPLOYMENT_TYPE
+              value: EKS
+            - name: VERSION
+              value: "1.0.0"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -87,6 +105,15 @@ spec:
     spec:
       containers:
         - name: inventory-service
-          image: <account>.dkr.ecr.<region>.amazonaws.com/inventory-service:latest
+          image: <account>.dkr.ecr.<region>.amazonaws.com/inventory-service:v1.0.0
           ports:
             - containerPort: 5000
+          env:
+            - name: SERVICE_NAME
+              value: inventory-service
+            - name: ENVIRONMENT
+              value: eks
+            - name: AWS_DEPLOYMENT_TYPE
+              value: EKS
+            - name: VERSION
+              value: "1.0.0"

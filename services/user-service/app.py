@@ -8,7 +8,7 @@ SERVICE_NAME = os.getenv("SERVICE_NAME", "user-service")
 app = create_service_app(SERVICE_NAME, "#2f9e44")
 
 
-@app.get("/users/profile")
+@app.get("/profile")
 def user_profile():
     return jsonify(
         {

@@ -3,6 +3,6 @@
 (async()=>{
  const services=['orders','users','payments','inventory']; const result={};
  for (const s of services){ result[s]=await fetchJson(`/${s}/system-info`); }
- renderList('out', result);
+ renderJson('out', result);
 })();
 </script></body></html>

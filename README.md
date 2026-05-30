@@ -37,26 +37,22 @@ A complete cloud-native Python microservices platform designed to run locally wi
 │   │   ├── app.py
 │   │   ├── Dockerfile
 │   │   ├── requirements.txt
-│   │   └── service_base.py
 │   ├── user-service/
 │   │   ├── app.py
 │   │   ├── Dockerfile
 │   │   ├── requirements.txt
-│   │   └── service_base.py
 │   ├── payment-service/
 │   │   ├── app.py
 │   │   ├── Dockerfile
 │   │   ├── requirements.txt
-│   │   └── service_base.py
 │   └── inventory-service/
 │       ├── app.py
 │       ├── Dockerfile
 │       ├── requirements.txt
-│       └── service_base.py
 └── deploy/
     ├── ecs/
     │   ├── service-definitions.md
-│   │   └── task-definitions.json
+    │   └── task-definitions.json
     └── eks/
         ├── deployment.yaml
         ├── hpa.yaml
@@ -85,8 +81,8 @@ Each service runs on port `5000` and provides:
 - `VERSION`
 
 ## Service Communication
-- `order-service` -> `user-service` via `/orders/details`
-- `payment-service` -> `inventory-service` via `/payments/process`
+- `order-service` -> `user-service` via `/details` (externally available as `/orders/details` through nginx)
+- `payment-service` -> `inventory-service` via `/process` (externally available as `/payments/process` through nginx)
 
 ## Request Tracing and Logging
 - Request ID generated for every incoming request (`X-Request-ID`)
@@ -159,8 +155,8 @@ docker compose down
 ### Validation Steps
 1. Verify dashboard: open `http://localhost:8080`
 2. Verify service communication:
-   - `http://localhost:8080/orders/orders/details`
-   - `http://localhost:8080/payments/payments/process`
+   - `http://localhost:8080/orders/details`
+   - `http://localhost:8080/payments/process`
 3. Verify request tracing: check `X-Request-ID` response header and downstream payloads
 4. Verify logging: inspect JSON logs from service containers
 5. Verify health checks:
@@ -169,7 +165,7 @@ docker compose down
    - `http://localhost:8080/load-test` and `/orders/lbtest`
 7. Verify failure simulation:
    - call `/inventory/simulate-failure`
-   - then call `/payments/payments/process`
+   - then call `/payments/process`
 
 ## Nginx Routing
 Path-based routes emulate AWS ALB behavior:

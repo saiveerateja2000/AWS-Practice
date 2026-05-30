@@ -5,11 +5,11 @@ from flask import g, jsonify
 from service_base import create_service_app, downstream_get
 
 SERVICE_NAME = os.getenv("SERVICE_NAME", "order-service")
-USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://user-service:5000/users/profile")
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://user-service:5000/profile")
 app = create_service_app(SERVICE_NAME, "#0077cc")
 
 
-@app.get("/orders/details")
+@app.get("/details")
 def order_details():
     status_code, downstream = downstream_get(USER_SERVICE_URL, g.request_id)
     return (
