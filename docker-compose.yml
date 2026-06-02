@@ -1,5 +1,6 @@
 services:
   nginx:
+    image: aws-practice-nginx:v1.0.0
     build: ./nginx
     ports:
       - "8080:80"
@@ -11,6 +12,7 @@ services:
       - inventory-service
 
   frontend:
+    image: aws-practice-frontend:v1.0.0
     build: ./frontend
     environment:
       SERVICE_NAME: frontend
@@ -19,6 +21,7 @@ services:
       VERSION: "1.0.0"
 
   order-service:
+    image: aws-practice-order-service:v1.0.0
     build:
       context: ./services
       dockerfile: order-service/Dockerfile
@@ -30,6 +33,7 @@ services:
       USER_SERVICE_URL: http://user-service:5000/profile
 
   user-service:
+    image: aws-practice-user-service:v1.0.0
     build:
       context: ./services
       dockerfile: user-service/Dockerfile
@@ -40,6 +44,7 @@ services:
       VERSION: "1.0.0"
 
   payment-service:
+    image: aws-practice-payment-service:v1.0.0
     build:
       context: ./services
       dockerfile: payment-service/Dockerfile
@@ -51,6 +56,7 @@ services:
       INVENTORY_SERVICE_URL: http://inventory-service:5000/check
 
   inventory-service:
+    image: aws-practice-inventory-service:v1.0.0
     build:
       context: ./services
       dockerfile: inventory-service/Dockerfile

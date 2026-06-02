@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cloud-native-traffic
+  labels:
+    app.kubernetes.io/name: cloud-native-traffic
+    app.kubernetes.io/part-of: cloud-native-traffic
