@@ -43,11 +43,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 25m
+              memory: 64Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
           env:
             - name: SERVICE_NAME
               value: frontend
@@ -103,11 +103,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 25m
+              memory: 64Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
           env:
             - name: SERVICE_NAME
               value: order-service
@@ -165,11 +165,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 25m
+              memory: 64Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
           env:
             - name: SERVICE_NAME
               value: user-service
@@ -225,11 +225,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 25m
+              memory: 64Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
           env:
             - name: SERVICE_NAME
               value: payment-service
@@ -287,11 +287,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 25m
+              memory: 64Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
           env:
             - name: SERVICE_NAME
               value: inventory-service

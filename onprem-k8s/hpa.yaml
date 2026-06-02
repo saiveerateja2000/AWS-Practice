@@ -9,14 +9,14 @@ spec:
     kind: Deployment
     name: frontend
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 10
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 50
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -29,14 +29,14 @@ spec:
     kind: Deployment
     name: order-service
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 10
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 50
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -49,14 +49,14 @@ spec:
     kind: Deployment
     name: user-service
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 10
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 50
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -69,14 +69,14 @@ spec:
     kind: Deployment
     name: payment-service
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 10
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 50
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -89,11 +89,11 @@ spec:
     kind: Deployment
     name: inventory-service
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 10
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 50

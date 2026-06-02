@@ -1,26 +1,97 @@
-# On-Prem Routing Concept
+# On-Prem Kubernetes Guide
 
-This folder models the on-prem Kubernetes version of the stack.
+This is the exact copy-paste runbook we used for the on-prem setup.
 
-There are two common ways to route requests:
+## 1) Apply the app manifests
 
-1. Path-based ingress
-   - Kubernetes Ingress matches paths like `/orders` and `/users`
-   - Each path goes directly to the matching backend Service
-   - The routing rules live in the cluster ingress config
+```bash
+kubectl apply -f onprem-k8s/namespace.yaml
+kubectl apply -f onprem-k8s/deployment.yaml
+kubectl apply -f onprem-k8s/service.yaml
+kubectl apply -f onprem-k8s/ingress.yaml
+kubectl apply -f onprem-k8s/hpa.yaml
+```
 
-2. Nginx proxy in the app layer
-   - A dedicated `nginx` pod receives traffic first
-   - Nginx reads `nginx.conf` and forwards requests to the app Services
-   - Path rules are stored in the Nginx config instead of the Ingress resource
+## 2) Verify the workloads
 
-For production-style Kubernetes, the on-prem setup uses path-based Ingress to route traffic directly to the frontend and backend Services, while the cluster ingress controller handles the external entry point.
+```bash
+kubectl -n cloud-native-traffic get pods,deploy,svc,ingress,hpa
+kubectl -n ingress-nginx get pods,svc
+```
 
-Why this matters:
+## 3) Make ingress-nginx reachable
 
-- The frontend pod still exists as its own Deployment and Service.
-- The frontend and backend pods are real workloads managed by Deployments.
-- The app manifests do not need to deploy an extra Nginx router pod.
-- If you want a Docker Compose-style setup, that routing lives in the app-side Nginx container instead.
+We used `ingress-nginx` and then exposed its controller with `NodePort`.
 
-In short: production on-prem Kubernetes usually keeps routing in Ingress and uses the application pods only for business logic.
+If the controller Service is still `LoadBalancer` with `<pending>` EXTERNAL-IP, patch it:
+
+```bash
+kubectl -n ingress-nginx patch svc ingress-nginx-controller -p '{"spec":{"type":"NodePort"}}'
+kubectl -n ingress-nginx get svc ingress-nginx-controller -o wide
+```
+
+The NodePort we used was `31019`.
+
+## 4) Access the application
+
+Get a node IP:
+
+```bash
+kubectl get nodes -o wide
+```
+
+Open the app through the ingress controller NodePort:
+
+```bash
+curl http://<NODE_IP>:31019/
+curl http://<NODE_IP>:31019/orders/details
+curl http://<NODE_IP>:31019/payments/process
+```
+
+If you only want a quick local test, port-forward the frontend:
+
+```bash
+kubectl -n cloud-native-traffic port-forward svc/frontend 8080:5000
+```
+
+Then open:
+
+```bash
+http://localhost:8080
+```
+
+## 5) Why the Ingress ADDRESS was empty
+
+The `Ingress` resource only defines routing rules. It does not create an external endpoint by itself.
+
+In our cluster:
+
+- `ingress-nginx` was installed
+- the controller Service was exposed with `NodePort`
+- the app was reachable through `http://<NODE_IP>:31019`
+
+We did not use MetalLB.
+
+## 6) Redeploy on another on-prem cluster
+
+Use the same flow:
+
+```bash
+kubectl apply -f onprem-k8s/namespace.yaml
+kubectl apply -f onprem-k8s/deployment.yaml
+kubectl apply -f onprem-k8s/service.yaml
+kubectl apply -f onprem-k8s/ingress.yaml
+kubectl apply -f onprem-k8s/hpa.yaml
+kubectl -n ingress-nginx patch svc ingress-nginx-controller -p '{"spec":{"type":"NodePort"}}'
+kubectl get nodes -o wide
+kubectl -n cloud-native-traffic get pods,svc,ingress,hpa
+```
+
+If you want the same NodePort on another cluster, set `nodePort` explicitly in the controller Service. If you do not set it, Kubernetes may assign a different free port.
+
+## 7) Clean up
+
+```bash
+kubectl delete -f onprem-k8s/
+kubectl -n ingress-nginx delete svc ingress-nginx-controller
+```
